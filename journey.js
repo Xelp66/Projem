@@ -20,7 +20,10 @@
   let journeyStep=0;
   db.journey=db.journey||{};
   if(!localStorage.getItem("cily_gfb_journey_initialized_v1")){
-    if(db.active==="DEMO"&&db.scenarios.some(s=>s.id==="GFB-01")) db.active="GFB-01";
+    if(db.active==="DEMO"&&db.scenarios.some(s=>s.id==="GFB-01")){
+      db.active="GFB-01";
+      try{localStorage.setItem(STORAGE,JSON.stringify(db));}catch(_ignore){}
+    }
     localStorage.setItem("cily_gfb_journey_initialized_v1","1");
   }
   icon.journey="◆";
