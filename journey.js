@@ -127,6 +127,7 @@
       if(f.units.some(x=>x.id==="UBN"))rows.push('<div class="jquestion"><b>UBN jeneratörleri:</b> Üç jeneratörün toplam yıllık 500 saatin altında çalışması planlama varsayımıdır. Bu veri otomatik yasal emisyon muafiyeti anlamına gelmez; işletim logları, nominal ısıl güç ve idare görüşü gerekir.</div>');
       if(f.air.some(x=>x.kind==="ambient"))rows.push('<div class="jquestion"><b>Ortam hava ölçümleri:</b> 15 PM10 (1 tur), 15 çöken toz (2 aylık dönem), 20 aktif VOC (2 tur), 20 merkaptan (1 tur); üç depolama tesisi için ortak plan. Nokta/kaynak tarifesi, merkaptan fiyat birimi ve modelleme kapsamı yetkili laboratuvarla doğrulanmalı.</div>');
     }
+    if(f.units.some(x=>x.id==="UBN")&&!hasAir()) rows.push('<div class="jquestion"><b>UBN jeneratörleri:</b> Yıllık toplam 500 saat altı çalışma planı tek başına otomatik yasal muafiyet oluşturmaz. ÇİLY kapsamı, üç jeneratörün nominal yakıt ısıl girdisi ve yetkili merci değerlendirmesi eksiktir.</div>');
     rows.push('<div class="jquestion"><b>Sıfır Atık, ÇED, kapasite:</b> Sıfır Atık Temel Seviye Belgesi ya da muafiyet, ÇED kararı/kapsam dışı görüşü ve kapasite raporu/alternatif belgeleri doğrulanmadan İl Müdürlüğü uygunluk yazısı tamamlandı kabul edilmeyecek.</div>');
     return rows.join("");
   }
@@ -139,7 +140,8 @@
       net+=item.net;gross+=item.gross;
       rows.push('<tr><td>'+clean(label)+'<div class="journey-muted">'+clean(note||"")+'</div></td><td>'+format(item.net)+'</td><td>'+format(item.gross)+'</td></tr>');
     }
-    push("GFB belge bedeli",ek?fee.gfb[ek]:null,"İşletme/başvuru kapsamında tek belge bedeli; tesis başına çarpılmaz.");
+    if(wantAir||wantWater)push("GFB belge bedeli",ek?fee.gfb[ek]:null,"İşletme/başvuru kapsamında tek belge bedeli; tesis başına çarpılmaz.");
+    else push("GFB yükümlülüğü – inceleme gerekli",null,"Seçilen kaynaklar için hava veya deşarj izin konusu tespit edilmedi; muafiyet veya başvuru kapsamı idare tarafından değerlendirilmelidir.");
     if(wantAir)push("Nihai izin – Hava Emisyonu",ek?fee.air[ek]:null,"GFB'den sonraki çevre izin aşaması.");
     if(wantWater)push("Nihai izin – "+(v.waterPermit==="water"?"Atıksu Deşarjı":v.waterPermit==="sea"?"Derin Deniz Deşarjı":"deşarj konusu teyit bekliyor"),ek&&v.waterPermit?fee.water[ek]:null,"Deşarj konusu kesinleştikten sonra yalnızca ilgili izin bedeli hesaplanır.");
     const footer='<tr class="sum"><td>Hesaplanabilen tutar · '+(unknown?unknown+" kalem belirsiz":"referans toplam")+'</td><td>'+format(net)+'</td><td>'+format(gross)+'</td></tr>';
