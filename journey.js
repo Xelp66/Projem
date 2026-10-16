@@ -160,8 +160,8 @@
       ["capacity","Kapasite raporu / eşdeğer belge / muafiyet belgesi"],
       ["projects","Arıtma ve deşarj proje onayları veya muafiyet yazıları kontrol edildi"],
       ["zerowaste","Sıfır Atık Temel Seviye belgesi veya muafiyet"],
-      ["sais","SAİS yükümlülüğü ve varsa sistem kurulum/onay durumu teyit edildi"],
-      ["seos","SEÖS yükümlülüğü ve varsa sistem kurulum/onay durumu teyit edildi"],
+      ...(hasWater()?[["sais","SAİS yükümlülüğü ve varsa sistem kurulum/onay durumu teyit edildi"]]:[]),
+      ...(hasAir()?[["seos","SEÖS yükümlülüğü ve varsa sistem kurulum/onay durumu teyit edildi"]]:[]),
       ["uygunluk","İl Müdürlüğü uygunluk yazısı düzenlendi"]
     ],'<p>Yönetmelikte uygunluk yazısının yerinde inceleme sonrasında başvurudan itibaren en geç 2 ay içinde düzenlenmesi ve bir yıl geçerli olması tanımlanır. Bu, GFB'nin kesin çıkış tarihi değildir.</p>',LINKS.regulation);
     html+=block("03","GFB dosyasını hazırla · EK-3A ve EK-3B","E-izin sistemi üzerinden yetkili çevre birimi/danışman tarafından elektronik imzalı başvuru.",[
@@ -202,7 +202,7 @@
     ["Su numuneleri ve analizler",c.waterSamples+c.waterAnalyses+c.waterBase+c.waterReport,"Numune alma, analiz, raporlama"],
     ["Baca emisyon ölçümleri",c.stackMeasurements+c.stackBase+c.stackReport,"Beş bağımsız çıkış (seçim varsa)"],
     ["Ortam hava ve modelleme",c.ambientMeasures+c.ambientModels+c.ambientBase+c.ambientReport,"Ortak kampanya (seçim varsa)"],
-    ["Özel ek parametreler",c.extra,"Kullanıcı tarafından eklenen kalemler"],
+    ["Özel ek parametreler",c.customTotal,"Kullanıcı tarafından eklenen kalemler"],
     ["Ulaşım (ihtiyatlı)",c.travel,"Mesafe ve ekip organizasyonu teyit bekliyor"]
     ].map(r=>'<tr><td>'+clean(r[0])+'</td><td>'+format(r[1])+'</td><td>'+clean(r[2])+'</td></tr>').join("")+'<tr class="sum"><td>Laboratuvar + ulaşım toplam</td><td>'+format(c.total)+'</td><td>KDV dahil '+format(c.gross)+'</td></tr></tbody></table>'+
       '<div class="jbar">'+jButton("Ayrıntılı ölçümler","measurements")+jButton("Senaryoyu karşılaştır","compare")+jButton("Yeni tesis ekle","new-facility")+jButton("Yazdır / PDF","print","primary")+'</div></div>';
